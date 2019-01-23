@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>充值</title>
+<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+<script
+	src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+<style type="text/css">
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+.whole {
+	width: 60%;
+	padding-top: 20px;
+	height: 787px;
+	margin: auto;
+	border: 1px solid whitesmoke;
+}
+
+.head {
+	height: 40px;
+	width: 100%;
+}
+
+.head-one {
+	width: 10px;
+	height: 10px;
+	margin-left: 50px;
+	margin-top: 15px;
+	float: left;
+	background-color: red;
+}
+
+.head-two {
+	width: 100px;
+	float: left;
+	margin-left: 10px;
+	margin-top: 5px;
+	font-size: 20px;
+}
+
+.tail {
+	width: 80%;
+	height: 600px;
+	margin-left: 80px;
+	margin-top: 40px;
+	border: 1px solid honeydew;
+}
+
+.tail-one {
+	width: 100%;
+	padding-top: 10px;
+	height: 40px;
+	border: 1px solid azure;
+	margin-top: 40px;
+}
+
+font {
+	font-size: 20px;
+}
+
+select {
+	width: 300px;
+	font-size: 16px;
+	height: 30px;
+	border: none;
+	text-align: center;
+}
+
+input {
+	width: 300px;
+	font-size: 16px;
+	height: 30px;
+	border: none;
+}
+
+.inpu {
+	margin-top: 60px;
+	height: 40px;
+	width: 300px;
+	margin-left: 200px;
+	font-size: 26px;
+	color: white;
+	background-color: #FF8C00;
+	border-radius: 10px;
+}
+</style>
+</head>
+<body>
+	<div class="whole" id="app">
+
+		<div class="head">
+			<div class="head-one">
+				<b></b>
+			</div>
+			<div class="head-two">
+				<b>充值</b>
+			</div>
+		</div>
+		<hr style="margin-top: 20px; width: 90%; margin-left: 40px;" />
+		<div class="tail">
+			<form action="">
+				<div class="tail-one">
+					选择银行卡:&nbsp;&nbsp;&nbsp;&nbsp; <select v-model="selected">
+							<option value="-1">--请选择--</option>
+						<template v-for="s in list.bancar">
+						<option :value="s.card_ID">{{s.card_Num}}</option>
+						</template>
+					</select>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<a href="bangDing.html">新增银行卡</a>
+				</div>
+				<div class="tail-one">
+					<font> 充&nbsp;值&nbsp;金&nbsp;额:&nbsp;&nbsp;&nbsp;&nbsp; <input
+						type="text" name="card_Balance" @change="check" v-model="balance"
+						placeholder="请输入充值金额" required="required"/>
+					</font>
+				</div>
+				<div class="tail-one">
+					<font> 资&nbsp;金&nbsp;密&nbsp;码:&nbsp;&nbsp;&nbsp;&nbsp; <input
+						type="password" name="card_PWD" placeholder="请输入资金密码" @change="checkPwd"
+						v-model="pwd" required="required" />
+					</font>
+				</div>
+
+				<input type="button" value="充值" class="inpu" @click="but"  />
+			</form>
+		</div>
+	</div>
+</body>
+<script>
+	//创建vue对象
+	var vm = new Vue({
+		el : '#app',
+		data : {
+			list : {},
+			selected :-1,
+			balance:'',
+			pwd:''
+		},
+		methods : {
+			get : function() {
+				//发送get请求
+				this.$http.get('Http://localhost:8080/bankCards.action').then(
+				//this.$http.get('Http://10.1.13.213:8080/bankCards.action').then(
+						function(res) {
+							this.list = res.data;
+						}, function() {
+							console.log('请求失败处理');
+						});
+			},
+			check : function() {
+				if(parseInt(this.balance)<1){
+					alert("请输入大于1金额!");
+					this.balance='';
+					return;
+				}else if(!/^[0-9]*$/.test(this.balance)){
+					alert("请输入有效数字!");
+					this.balance='';
+					return;
+				}
+			},
+			checkPwd:function(){
+				if(!/^[0-9]{6}$/.test(this.pwd)){
+					alert("请输入6位有效数字!")
+					this.pwd='';
+				}
+			},
+			but:function(){
+				if(this.selected == -1){
+					alert("请选择银行卡!");
+					return;
+				}else if(this.balance==''||this.balance==null){
+					alert("请输入充值金额!");
+					return;
+				}else if(this.pwd==''|| this.pwd==null){
+					alert("密码不能为空!");
+					return;
+				}
+				this.$http.get('Http://localhost:8080/qureyById.action?selected='+this.selected+"&balance="+this.balance+"&pwd="+this.pwd).then(
+				//this.$http.get('Http://10.1.13.213:8080/qureyById.action?selected='+this.selected+"&balance="+this.balance+"&pwd="+this.pwd).then(
+						function(res) {
+							if(res.data.start=="erreo"){
+								alert(res.data.msg);
+								this.selected='';
+								this.balance='';
+								this.pwd='';
+								
+								return;
+							}else{
+								alert(res.data.msg);
+								location.href="PersonalPage.html";
+							}
+						}, function() {
+							console.log('请求失败处理');
+						});   	
+			}  
+		},
+		mounted : function() {
+			this.get();
+		},
+
+	});
+</script>
+</html>

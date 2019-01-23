@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://cdn.staticfile.org/vue/2.2.2/vue.min.js"></script>
+	<script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+</head>
+<body>
+	<div id="app">
+		<div v-for="s in list">
+			aasssssss{{s.card_Num}}
+		</div>
+	</div>
+	
+</body>
+<script >
+	//创建vue对象
+	 var vm = new Vue({
+        el:'#app',
+        data:{
+        	list:{}
+        	
+        },
+       
+        methods:{
+            get:function(){
+            	alert("123214");
+                //发送get请求
+                 this.$http.get('Http://localhost:8080/bankCards.action').then(function(res){
+                	 this.list=res.data;
+                	 alert(JSON.stringify(res.data));
+                	 console.log(this.list);
+                },function(){
+                    console.log('请求失败处理');
+                });
+            }
+        },
+        mounted: function(){
+        	this.get();
+        }
+    });
+	 </script>
+</html>

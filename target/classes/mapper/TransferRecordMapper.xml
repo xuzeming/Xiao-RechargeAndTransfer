@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zl.mapper.TransferRecordMapper">
+	<!-- 添加记录 -->
+	<insert id="transferRecordInsert" parameterType="TransferRecord">
+		insert into
+		Transfer_Record(Transfer_Record_ID,Transfer_Type_ID,In_Account,Out_Account,Transfer_Money,Transfer_Time,Transfer_Description)
+		values(SQ_Transfer_Record_ID.Nextval,#{transfer_Type_ID},#{in_Account},#{out_Account},#{transfer_Money},sysDate,#{transfer_Description})
+	</insert>
+</mapper>

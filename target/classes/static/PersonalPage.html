@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>个人信息页面</title>
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/bootstrap/3.3.4/css/bootstrap.min.css">
+    <script src="../jquery.min.js"></script>
+    <script src="../bootstrap.min.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">晓组织</a>
+                </div>
+            </div>
+        </nav>
+
+        <!--欢迎页面-->
+        <div id="head">
+            <h2 style="margin-left: 60px;margin-top: 60px;"><samp>欢迎您,XXXXX</samp></h2>
+        </div>
+        <!--中间部分-->
+        <div id="middle" class="row" style="margin-left: 100px;margin-top: 40px;">
+            <div id="middle_left" class="bg-info col-lg-3 ">
+                <h2>
+                    开户状态
+                </h2>
+                <p><span class="glyphicon glyphicon-ok-circle" aria-hidden="true" style="color: green"></span>已经开启</p>
+                <p><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="color: red"></span>未开启</p>
+                <a href="identity.html" class="btn btn-info  active col-xs-4" role="button">点击开户</a>
+            </div>
+            <div id="middle_middle" class="bg-primary col-lg-3 col-sm-offset-1">
+                <h2>账户余额</h2>
+                <p><span class="glyphicon glyphicon-yen  " aria-hidden="true">0.0000</span></p>
+                <a href="Recharge.html" class="btn btn-warning  active col-xs-4" role="button">充值</a>
+            </div>
+            <div id="middle_right" class="bg-warning col-lg-3 col-sm-offset-1">
+                <h2>我的资产</h2>
+                <p><span class="glyphicon glyphicon-yen  " aria-hidden="true">7034.56</span></p>
+                <a href="#" class="btn btn-primary  active col-xs-4" role="button">资产明细</a>
+            </div>
+        </div>
+        <div id="foot" class="row" style="margin-left: 100px;margin-top: 40px;">
+            <div id="foot_left" class="bg-info col-lg-3 " style="text-align: center">
+                <span class="glyphicon glyphicon-yen  " aria-hidden="true" style="font-size: 40px;"><a href="#" >证券列表</a></span>
+            </div>
+            <div id="foot_middle" class="bg-warning col-lg-3 col-sm-offset-1">
+                <span class="glyphicon glyphicon-usd" aria-hidden="true" style="font-size: 40px;"><a href="#">我的证券</a></span>
+            </div>
+            <div id="foot_right" class="bg-white col-lg-3 col-sm-offset-1">
+                <span class="glyphicon glyphicon-envelope" aria-hidden="true" style="font-size: 40px;"><a href="#">我的信息</a></span>
+            </div>
+        </div>
+        <!--最下面-->
+        <div id="last" class="row" style="margin-left: 100px;margin-top: 40px;">
+            <div id="last_left" class="bg-success col-lg-3 " style="text-align: center">
+                <span class="glyphicon glyphicon-briefcase " aria-hidden="true" style="font-size: 40px;"><a href="#">我的卡号</a></span>
+            </div>
+            <div id="last_middle" class="bg-danger col-lg-3 col-sm-offset-1">
+                <span class="glyphicon glyphicon-refresh" aria-hidden="true" style="font-size: 40px;"><a href="Transfer.html">银证转账</a></span>
+            </div>
+            <div id="last_right" class="bg-secondary col-lg-3 col-sm-offset-1">
+                <span class="glyphicon glyphicon-eye-close" aria-hidden="true" style="font-size: 40px;"><a href="#">修改密码</a></span>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zl.mapper.BankCardMapper">
+	<!-- 查询银行卡信息根据用户id -->
+	<select id="qureyAll" parameterType="int" resultType="BankCard">
+		select
+		bc.Card_ID,bc.Card_Num,bc.Card_PWD,bc.Card_Type,bc.Card_Balance,bc.Card_Owner,bc.Card_Tel
+		from scott.bank_card bc join scott.User_Bank_Card ubc on ubc.card_id = bc.card_id
+		where ubc.user_id=#{id}
+	</select>
+	<!-- 根据银行卡Id查询 -->
+	<select id="selectById" parameterType="Integer" resultType="BankCard">
+		select Card_Balance ,card_PWD,Card_Num
+		from bank_card where Card_ID=#{id} for update
+	</select>
+	<!-- 充值转入修改 -->
+	<update id="bankCardupdate" parameterType="ConditionalClass"  >
+		update bank_card set Card_Balance=Card_Balance - #{balance} where Card_ID=#{selected}
+	</update>
+	<!-- 转出修改 -->
+	<update id="bankCardupdateOut" parameterType="ConditionalClass"  >
+		update bank_card set Card_Balance=Card_Balance + #{balance} where Card_ID=#{selected}
+	</update>
+</mapper>

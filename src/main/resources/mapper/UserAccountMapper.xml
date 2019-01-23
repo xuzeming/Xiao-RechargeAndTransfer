@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper SYSTEM "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zl.mapper.UserAccountMapper">
+	<!-- 修改 (充/入)-->
+	<update id="accountUpdate" parameterType="ConditionalClass">
+		update
+		User_Account set
+		Account_Balance=Account_Balance + #{balance} where
+		User_ID=(select
+		User_ID from User_Bank_Card where card_id=#{selected})
+	</update>
+	<!-- 查询 -->
+	<select id="qureyAll" parameterType="Integer"
+		resultType="UserAccount">
+		select
+		Account_Num,account_Balance,capital_PWD
+		from User_Account where User_ID=(select User_ID from User_Bank_Card
+		where card_Id=#{parseInt})
+	</select>
+	<!-- 修改(出) -->
+	<update id="accountUpdateOut" parameterType="ConditionalClass">
+		update
+		User_Account set
+		Account_Balance=Account_Balance - #{balance} where
+		User_ID=(select
+		User_ID from User_Bank_Card where card_id=#{selected})
+	</update>
+</mapper>

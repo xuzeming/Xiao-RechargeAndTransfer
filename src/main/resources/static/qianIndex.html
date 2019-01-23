@@ -1,0 +1,265 @@
+<html>
+	<head>
+		<title>前台主页面</title>
+		<meta charset="UTF-8" />
+		<!--引入图标样式-->
+		<link rel="stylesheet" type="text/css" href="themes/icon.css" />		
+		<!--引入jQuery文件-->
+		<script src="js/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--引入EasyUi的js文件-->
+		<script src="js/jquery.easyui.min.js" type="text/javascript" charset="utf-8"></script>
+		<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
+		<!--引入主题样式-->
+		<link rel="stylesheet" type="text/css" href="themes/default/easyui.css" />
+
+		
+		<style type="text/css">			
+					
+			#sdiv {
+				text-align: center;
+				font-size: 14px;
+				font-weight: bold;
+				line-height: 30px;
+				background-color: gray;
+			}
+			/*修改头部标题样式*/
+			
+			#n_title {
+				color: white;
+				font-size: 14px;
+				line-height: 40px;
+			}
+			/*修改标题超链接样式*/
+			
+			#n_title a {
+				text-decoration: none;
+				color: white;
+			}
+			
+			#n_title a:hover {
+				color: orange;
+			}
+	</style>
+		<!--声明js代码域-->
+		<script type="text/javascript">
+			/*网页js功能*/
+				/*网页js功能*/
+			$(function() {
+				//退出功能
+				$("#n_title_out").click(function() {
+						//提示用户是否确定退出
+						$.messager.confirm("确认对话框", "你真的要退出吗？", function(r) {
+							//退出
+							if (r) {
+								window.location.href = "01_login.html";
+							}
+						})
+					})
+
+			//树状菜单和选项卡的联动
+				//给菜单添加单击事件
+				$("#treeMenu").tree({
+					onClick:function(node){
+						//控制台打印node内容
+							//console.log(node);
+						//获取attributes属性,判断是菜单还是菜单描述
+						var attrs=node.attributes;
+						if(attrs==null || attrs.url==null){
+							return;
+						}
+						var tab = $('#div_tabs').tabs('getSelected');
+						var index = $('#div_tabs').tabs('getTabIndex', tab);
+						$('#div_tabs').tabs('close', index);
+							7
+						//判断选项卡是否存在
+						var has=$("#div_tabs").tabs("exists",node.text);
+						if(has){
+							//选中存在的选项卡
+							$("#div_tabs").tabs("select",node.text);
+						}else{
+							//创建新的选项卡面板
+							$("#div_tabs").tabs("add",{
+								title:node.text,
+								closable:true,
+								content:"<iframe src="+attrs.url+" style='width:100%;height:98%' frameborder='0'/>"
+							})
+						}
+					}
+				})
+		/*a标签跳转*/		
+					$(".bat").click(function(){
+							var textContent = this.innerHTML;  //获得超链接中的文本内容
+							var url = this.href;  //获得请求路径
+							
+							//获取index关闭
+							var tab = $('#div_tabs').tabs('getSelected');
+							var index = $('#div_tabs').tabs('getTabIndex',tab);
+							$('#div_tabs').tabs('close',index);
+							
+							var flag = $("#div_tabs").tabs("exists",textContent);
+							if(flag){
+								$('#div_tabs').tabs("select",textContent);
+							}else{
+								// add a new tab panel    
+								$('#div_tabs').tabs('add',{    
+								    title:textContent,    
+								    selected:true,
+								    content:createURL(url),    //页面内容，可以是已经写好的页面的路径
+								    closable:true,      
+								}); 
+							} 
+							return false;
+						});
+				
+				
+			})
+			function createURL(url){
+				return "<iframe src='"+url+"' style='border:0px;width:100%;height:95%;'></iframe>";
+			}
+		</script>
+	</head>
+
+	<body class="easyui-layout">
+		<!--布局：北-->
+		<div data-options="region:'north'" style="background-color:#3E4047 ;width:100%;background-image: url(img/1547710842.png);">
+			<!--添加网站Logo-->
+			<img src="img/1546694149(1).png"  style="width:200px;height:50px;margin:0;vertical-align:top;"/>
+			<span id="n_title" style="float: right;">
+				欢迎 登录&nbsp;&nbsp;&nbsp;
+				<a id="n_title_out" href="javascript:void(0)">退出</a>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			</span>
+		</div>
+		<!--布局：西-->
+		<div data-options="region:'west',title:'晓组织证券',split:true" style="width: 200px;">
+			<!--分类效果实现-->
+			<div class="easyui-accordion" data-options="fit:true,border:false">
+				<div id="" title="" >
+					<!--创建菜单-->
+					<ul id="treeMenu" class="easyui-tree">
+						<li data-options="attributes:{url:'PersonalPage.html'}">个人首页</li>
+						<li>
+							<span title="">1账户查询</span>
+							<!--二级-->
+							<ul>
+								<li data-options="attributes:{url:'ziChanMingXi.html'}">资产明细</li>
+							</ul>
+						</li>
+						<li>			
+							<span class="n">1账户管理</span>
+							<ul>
+								<li>
+									<!--二级-->
+									<span class="n">1修改密码</span>
+									<!--三级-->
+									<ul>
+										<li data-options="attributes:{url:'ChangeAccountPassword.html'}">修改账号密码</li>
+										<li data-options="attributes:{url:'changeDealPassword.html'}">修改交易密码</li>
+									</ul>
+								</li>
+								<li>
+									<span>1完善资料</span>
+									<ul>
+										<li data-options="attributes:{url:'wanShanXingxi.html'}">完善个人资料</li>
+										<li data-options="attributes:{url:'身份认证.html'}">身份证上传</li>
+										<li data-options="attributes:{url:'chongVideoUpload.html'}">视频上传</li>
+									</ul>
+								</li>
+								<li>
+									<span>1银证业务管理</span>
+									<ul>
+										<li data-options="attributes:{url:'Transfer.html'}">银证转账</li>
+										<li data-options="attributes:{url:'transferdetail.html'}">银证转账记录</li>
+										<li data-options="attributes:{url:'bangDing.html'}">新增银行卡</li>
+										<li data-options="attributes:{url:'jieBang.html'}">解绑银行卡</li>
+									</ul>
+								</li>
+								
+							</ul>
+						</li>
+						<li>
+							<span>1证券操作</span>
+							<ul>
+								<li data-options="attributes:{url:'chaKanGuPiao.html'}">查看股票</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+				
+			</div>
+			
+		</div>
+		<!--布局：中间-->
+		<div data-options="region:'center'">
+			<!--选项卡使用-->
+			<div id="div_tabs" class="easyui-tabs" data-options="fit:true,border:false">				
+				<div title="个人信息"  >	
+			<!--首页-->		
+					<nav class="navbar navbar-default" role="navigation">
+			            <div class="container-fluid">
+			                <div class="navbar-header">
+			                    <span class="navbar-brand" >晓组织</span>
+			                </div>
+			            </div>
+			        </nav>
+
+			        <!--中间部分-->
+			        <div id="middle" class="row" style="margin-left: 100px;margin-top: 40px;" id="app">
+			            <div id="middle_left" class="bg-info col-lg-3 ">
+			                <h2>
+			                    	开户状态
+			                </h2>
+			                <p><span class="glyphicon glyphicon-ok-circle" aria-hidden="true" style="color: green"></span>已经开启</p>
+			                <p><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" style="color: red"></span>未开启</p>
+			                <a href="identity.html" class="bat btn btn-info  active col-xs-4" role="button">点击开户</a>
+			            </div>
+			            <div id="middle_middle" class="bg-primary col-lg-3 col-sm-offset-1">
+			                <h2>账户余额</h2>
+			                <p><span class="glyphicon glyphicon-yen  " aria-hidden="true">0.0000</span></p>
+			                <a href="Recharge.html" class="bat btn btn-warning  active col-xs-4" role="button" style="color: black;">充值</a>
+			            </div>
+			            <div id="middle_right" class="bg-warning col-lg-3 col-sm-offset-1">
+			                <h2>我的资产</h2>
+			                <p><span class="glyphicon glyphicon-yen  " aria-hidden="true">7034.56</span></p>
+			                <a href="ziChanMingXi.html" class="bat btn btn-primary  active col-xs-4" role="button">资产明细</a>
+			            </div>
+			        </div>
+			        <div id="foot" class="row" style="margin-left: 100px;margin-top: 40px;">
+			            <div id="foot_left" class="bg-info col-lg-3 " style="text-align: center">
+			                <span class="glyphicon glyphicon-yen  " aria-hidden="true" style="font-size: 40px;">
+			                	<a href="chaKanGuPiao.html" class="bat">查看股票</a>
+			                </span>
+			            </div>
+			            <div id="foot_middle" class="bg-warning col-lg-3 col-sm-offset-1">
+			                <span class="glyphicon glyphicon-usd" aria-hidden="true" style="font-size: 40px;">
+			                	<a href="ziChanMingXi.html" class="bat">资产明细</a></span>
+			            </div>
+			            <div id="foot_right" class="bg-white col-lg-3 col-sm-offset-1">
+			                <span class="glyphicon glyphicon-envelope" aria-hidden="true" style="font-size: 40px;">
+			                	<a href="wanShanXingxi.html" class="bat">我的信息</a></span>
+			            </div>
+			        </div>
+			        <!--最下面-->
+			        <div id="last" class="row" style="margin-left: 100px;margin-top: 40px;">
+			            <div id="last_left" class="bg-success col-lg-3 " style="text-align: center">
+			                <span class="glyphicon glyphicon-briefcase " aria-hidden="true" style="font-size: 40px;">
+			                	<a href="我的银行卡.html" class="bat">我的银行卡</a></span>
+			            </div>
+			            <div id="last_middle" class="bg-danger col-lg-3 col-sm-offset-1">
+			                <span class="glyphicon glyphicon-refresh" aria-hidden="true" style="font-size: 40px;">
+			                	<a href="Transfer.html" class="bat">银证转账</a></span>
+			            </div>
+			            <div id="last_right" class="bg-secondary col-lg-3 col-sm-offset-1">
+			                <span class="glyphicon glyphicon-eye-close" aria-hidden="true" style="font-size: 40px;">
+			                	<a href="ChangeAccountPassword.html" class="bat">修改密码</a></span>
+			            </div>
+			        </div>
+					
+				</div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		
+	</script>
+</html>
