@@ -92,8 +92,8 @@
 		methods : {
 			get : function() {
 				//发送get请求
-				this.$http.get('Http://localhost:8080/bankCards.action').then(
-				//this.$http.get('Http://10.1.13.213:8080/bankCards.action').then(
+				//this.$http.get('Http://localhost:8080/bankCards.action').then(
+				this.$http.get('Http://10.1.13.213:8080/bankCards.action').then(
 						function(res) {
 							this.list = res.data;
 						}, function() {
@@ -105,7 +105,7 @@
 					alert("请输入大于1金额!");
 					this.balance='';
 					return;
-				}else if(!/^[0-9]*$/.test(this.balance)){
+				}else if(!/^([1-9]\d*\.?\d{0,2})$/.test(this.balance)){
 					alert("请输入有效数字!");
 					this.balance='';
 					return;
@@ -131,8 +131,8 @@
 					alert("密码不能为空!");
 					return;
 				}
-				this.$http.get('Http://localhost:8080/qureyById.action?selected='+this.selected+"&balance="+this.balance+"&pwd="+this.pwd+"&sele="+this.sele).then(
-				//this.$http.get('Http://10.1.13.213:8080/qureyById.action?selected='+this.selected+"&balance="+this.balance+"&pwd="+this.pwd+"&sele="+this.sele).then(
+				//this.$http.get('Http://localhost:8080/qureyById.action?selected='+this.selected+"&balance="+this.balance+"&pwd="+this.pwd+"&sele="+this.sele).then(
+				this.$http.get('Http://10.1.13.213:8080/qureyById.action?selected='+this.selected+"&balance="+this.balance+"&pwd="+this.pwd+"&sele="+this.sele).then(
 						function(res) {
 							if(res.data.start=="erreo"){
 								alert(res.data.msg);

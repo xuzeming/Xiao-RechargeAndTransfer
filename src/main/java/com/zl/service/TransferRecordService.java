@@ -1,5 +1,8 @@
 package com.zl.service;
 
+import com.zl.pojo.ConditionalClass;
+import com.zl.pojo.PageVo;
+
 public interface TransferRecordService {
 	/**
 	 * 
@@ -9,6 +12,8 @@ public interface TransferRecordService {
 	 * @param num  
 	 * @param sele
 	 */
-	void insertByTransferRecord(String msg, String selected, String balance,String num,int id);
+	void insertByTransferRecord(String msg, String selected, String balance,String num,int id,Integer userId);
+	//分页
+	PageVo qureyPage(ConditionalClass cond);
 
 }

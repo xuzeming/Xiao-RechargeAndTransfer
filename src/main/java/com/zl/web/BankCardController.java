@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.zl.pojo.BankCard;
+import com.zl.pojo.ConditionalClass;
 import com.zl.pojo.PageVo;
 import com.zl.pojo.ReturnDatas;
 import com.zl.pojo.UserAccount;
@@ -60,9 +61,13 @@ public class BankCardController {
 	@RequestMapping("/qureyById.action")
 	@ResponseBody
 	@Transactional(propagation=Propagation.SUPPORTS)
-	public ReturnDatas  quretyById(String selected,String balance,String pwd,String sele ) {
+	public ReturnDatas  quretyById(String selected,String balance,String pwd,String sele ,HttpSession session ) {
 		ReturnDatas  ret = new ReturnDatas();//创建对象
-		System.out.println(sele);
+		UserCenters    us = new UserCenters();
+		if (session.getAttribute("user")!=null) {
+			us =(UserCenters) session.getAttribute("user");
+		}
+		Integer  useId = us.getUser_ID();
 		double money=0;
 		String password="";
 		String num ="";
@@ -99,7 +104,7 @@ public class BankCardController {
 			return ret;
 		}else {
 			//调用修改方法 bankCard.getCard_Num() 银行卡号
-		 ret = updateAmountOfMoney(selected,balance,num,id);
+		 ret = updateAmountOfMoney(selected,balance,num,id,useId);
 		 return ret;
 		}
 	}
@@ -114,7 +119,7 @@ public class BankCardController {
 	 * @return
 	 */
 	@Transactional
-	private ReturnDatas updateAmountOfMoney(String selected,String balance,String num,int id) {
+	private ReturnDatas updateAmountOfMoney(String selected,String balance,String num,int id,Integer userId) {
 		ReturnDatas  retd  = new ReturnDatas();
 		//根据银行卡id修改资金账户余额
 		boolean b1=userAccountService.upDateAccount(selected,balance,id);
@@ -122,14 +127,31 @@ public class BankCardController {
 		boolean b2=bankCardService.upDaterBankCard(selected,balance,id);
 		if (b2==true && b1 == true) {
 			retd.setMsg("转账成功!");
-			transferRecordService.insertByTransferRecord(retd.getMsg(),selected,balance,num, id);
+			transferRecordService.insertByTransferRecord(retd.getMsg(),selected,balance,num, id,userId);
 		}else {
 			retd.setStart("erreo");
 			retd.setMsg("转账失败!");
-			transferRecordService.insertByTransferRecord(retd.getMsg(),selected,balance,num, id);
+			transferRecordService.insertByTransferRecord(retd.getMsg(),selected,balance,num, id,userId);
 		}
 		return  retd;
 	}
-	
-	
+	/**
+	     * 转账明细
+	 * @param cond 条件类 
+	 * @return
+	 */
+	@RequestMapping("/qureyPage.action")
+	@ResponseBody
+	public PageVo qureyPage(ConditionalClass  cond,HttpSession session) {
+		UserCenters    us = new UserCenters();
+		if (session.getAttribute("user")!=null) {
+			us =(UserCenters) session.getAttribute("user");
+		}
+		cond.setUserId(4);
+		System.err.println(cond);
+		System.err.println(cond.getPageIndex());
+		PageVo page = transferRecordService.qureyPage(cond);
+		return page;
+		
+	}
 }

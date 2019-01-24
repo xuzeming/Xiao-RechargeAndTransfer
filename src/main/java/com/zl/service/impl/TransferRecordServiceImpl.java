@@ -7,8 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zl.mapper.BankCardMapper;
 import com.zl.mapper.TransferRecordMapper;
+import com.zl.mapper.TransferTypeMapper;
 import com.zl.mapper.UserAccountMapper;
 import com.zl.pojo.BankCard;
+import com.zl.pojo.ConditionalClass;
+import com.zl.pojo.PageVo;
 import com.zl.pojo.TransferRecord;
 import com.zl.pojo.UserAccount;
 import com.zl.service.TransferRecordService;
@@ -21,14 +24,16 @@ public class TransferRecordServiceImpl implements TransferRecordService {
 	private UserAccountMapper  userAccountMapper;
 	@Autowired
 	private BankCardMapper bankCardMapper;
-	
+	@Autowired
+	private TransferTypeMapper transferTypeMapper;
 	@Override
 	@Transactional(propagation=Propagation.SUPPORTS)
-	public void insertByTransferRecord(String msg, String selected, String balance ,String num,int id) {
+	public void insertByTransferRecord(String msg, String selected, String balance ,String num,int id,Integer userId) {
 		TransferRecord  trf =  new TransferRecord ();
 		trf.setTransfer_Description(msg);
 		trf.setTransfer_Type_ID(id);
 		trf.setTransfer_Money(Double.parseDouble(balance));
+		
 		UserAccount usa = userAccountMapper.qureyAll(Integer.parseInt(selected));
 		
 		//调用添加方法
@@ -45,6 +50,19 @@ public class TransferRecordServiceImpl implements TransferRecordService {
 		}
 		
 		transferRecordMapper. transferRecordInsert(trf);
+	}
+
+	@Override
+	public PageVo qureyPage(ConditionalClass cond ) {
+		PageVo  pv = new PageVo();
+			pv.setPageIndex(cond.getPageIndex());
+			pv.setPageSize(cond.getPageSize());
+			pv.setTransferType(transferTypeMapper.selectAll());
+			//总记录
+			pv.setTotalCount(transferRecordMapper.getByCount(cond));
+			//分页数据
+			pv.setTransferRecord(transferRecordMapper.qureyByfy(cond));
+		return pv;
 	}
 
 }

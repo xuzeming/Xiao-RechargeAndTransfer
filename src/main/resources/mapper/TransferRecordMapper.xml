@@ -5,6 +5,41 @@
 	<insert id="transferRecordInsert" parameterType="TransferRecord">
 		insert into
 		Transfer_Record(Transfer_Record_ID,Transfer_Type_ID,In_Account,Out_Account,Transfer_Money,Transfer_Time,Transfer_Description)
-		values(SQ_Transfer_Record_ID.Nextval,#{transfer_Type_ID},#{in_Account},#{out_Account},#{transfer_Money},sysDate,#{transfer_Description})
+		values(SQ_Transfer_Record_ID.Nextval,#{transfer_Type_ID},#{in_Account},#{out_Account},#{transfer_Money},sysDate,#{transfer_Description},#{user_Id})
 	</insert>
+	<select id="qureyByfy" parameterType="ConditionalClass" resultType="TransferRecord">
+		select t.*
+		      from ( select tr.*, tf.transfer_type tname, rownum  rn 
+		      from Transfer_Record tr
+		      join Transfer_Type tf
+		      on tr.transfer_type_id = tf.transfer_type_id
+		      	<include refid="wholeSql"></include>
+		      ) t
+		      WHERE t.rn BETWEEN #{starts} AND #{ends}
+	</select>
+	<select id="getByCount" parameterType="ConditionalClass" resultType="Integer">
+		select count(1)from ( select tr.*, tf.transfer_type tname, Rownum  rn 
+		      from Transfer_Record tr
+		      join Transfer_Type tf
+		      on tr.transfer_type_id = tf.transfer_type_id
+		      	<include refid="wholeSql"></include>
+		      )
+	</select>
+	<sql id="wholeSql">
+		<where>
+			<if test="transfer_Type_Id !=null and  transfer_Type_Id >0 ">
+				and tf.transfer_Type_Id=#{transfer_Type_Id}
+			</if>
+			<if test="transfer_Record_Id !=null and transfer_Record_Id >0">
+				and tr.transfer_Record_Id=#{transfer_Record_Id}
+			</if>
+			<if test="startTime != null ">
+				and tr.transfer_time &gt;=#{startTime}
+			</if>
+			<if test="endTime != null">
+				and tr.transfer_time &lt;=#{endTime}
+			</if>
+				and tr.user_id=#{userId}
+		</where>
+	</sql>
 </mapper>

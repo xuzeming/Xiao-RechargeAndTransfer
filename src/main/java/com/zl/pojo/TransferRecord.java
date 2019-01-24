@@ -12,8 +12,23 @@ public class TransferRecord implements  Serializable {
 	private  double transfer_Money;//金额
 	private Date transfer_Time;//时间
 	private String transfer_Description	;//说明
+	private Integer user_Id;//用户Id
+	private String tname;//类型名
+	
+	public Integer getUser_Id() {
+		return user_Id;
+	}
+	public void setUser_Id(Integer user_Id) {
+		this.user_Id = user_Id;
+	}
 	public Integer getTransfer_Record_ID() {
 		return transfer_Record_ID;
+	}
+	public String getTname() {
+		return tname;
+	}
+	public void setTname(String tname) {
+		this.tname = tname;
 	}
 	public void setTransfer_Record_ID(Integer transfer_Record_ID) {
 		this.transfer_Record_ID = transfer_Record_ID;
@@ -58,7 +73,9 @@ public class TransferRecord implements  Serializable {
 	public String toString() {
 		return "TransferRecord [transfer_Record_ID=" + transfer_Record_ID + ", transfer_Type_ID=" + transfer_Type_ID
 				+ ", in_Account=" + in_Account + ", out_Account=" + out_Account + ", transfer_Money=" + transfer_Money
-				+ ", transfer_Time=" + transfer_Time + ", transfer_Description=" + transfer_Description + "]";
+				+ ", transfer_Time=" + transfer_Time + ", transfer_Description=" + transfer_Description + ", user_Id="
+				+ user_Id + "]";
 	}
+	
 	
 }
